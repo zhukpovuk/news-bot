@@ -1,8 +1,8 @@
-import asdasd
+import databa
 import telebot
 import requests
 from peewee import *
-from asdasd import *
+from databa import *
 import datfile
 parameters = {
     #'q': 'dollar', # query phrase  # maximum is 100
@@ -11,9 +11,7 @@ parameters = {
     'category': 'business',
     'apiKey': '0b19c9bde21541859e8176ed2060de79' # your own API key
 }
-import json
-from telebot import types
-#import TicTacToe
+
 url = 'https://newsapi.org/v2/top-headlines?'
 parameters = {
     #'q': 'dollar', # query phrase  # maximum is 100
@@ -38,21 +36,23 @@ def get_text_messages(message):
         bot.send_message(message.from_user.id, "Hello, I am news bot. Please enter your username:")
         bot.register_next_step_handler(message, start_search0);
 
+
 def start_search0(message):
     global nick
     nick = message.text
     if asdasd.check_name(nick):
         asdasd.write_player(nick)
-        bot.send_message(message.from_user.id, "I'm glad to see you, "+ nick +"\n/get_some_news — choose the country whose news you want to receive,\n/help — Repeats this message,\n/stats - Get stats")
+        bot.send_message(message.from_user.id, "I'm glad to see you, "+ nick +'''\n/get_some_news — choose the country whose news you want
+        to receive,\n/help — Repeats this message,\n/stats - Get stats''')
         bot.register_next_step_handler(message, start_search)
     else:
         bot.send_message(message.from_user.id, "This user is taken, please enter another one")
         bot.register_next_step_handler(message, start_search0)
     if message.text == "/help":
         bot.send_message(message.from_user.id,
-                         "I'm glad to see you, "+ nick +"\n/get_some_news — choose the country whose news you want to receive,\n/help — Repeats this message,\n/stats - Get stats")
+                         "I'm glad to see you, "+ nick +'''\n/get_some_news — choose the country whose news you want to receive,
+                         \n/help — Repeats this message,\n/stats - Get stats''')
         bot.register_next_step_handler(message, start_search);
-
 
 
 def start_search(message):
@@ -70,11 +70,13 @@ def start_search(message):
         business_number_of_requests = str(int(stats_set[1]))
         entertainment_number_of_requests = str(int(stats_set[2]))
         bot.send_message(message.from_user.id,
-                         'Stats for ' + nick + ':\n\nbusiness_number_of_requests: ' + business_number_of_requests + '\nentertainment_number_of_requests: ' + entertainment_number_of_requests)
+                         'Stats for ' + nick + ':\n\nbusiness_number_of_requests: ' + business_number_of_requests + '''\nentertainment_number_of_requests: 
+                         ''' + entertainment_number_of_requests)
         bot.register_next_step_handler(message, start_search)
     else:
         bot.send_message(message.from_user.id, "I don't understand you, please type /help.")
         bot.register_next_step_handler(message, get_text_messages);
+
 
 def ch_country(message):
     if message.text == "/category":
@@ -90,35 +92,22 @@ def ch_country(message):
         bot.register_next_step_handler(message, get_text_messages);
 
 
-
 def sho(message):
-    #parameters['category'] = message.text
-    #url = ''
-    #bot.send_message(message.from_user.id, )
-    #parameters['source'] = 'CNN'
-    #parameters['keyslovo'] = 'medicine'
-    #response = requests.get(url, params=parameters)
-    #response_json = response.json()
     c = datfile.get_news_from_topic(message.text)
     asdasd.update_stats(nick, message.text)
     bot.send_message(message.from_user.id, c)
     #bot.register_next_step_handler(message, start_search0);
-    bot.send_message(message.from_user.id, nick +", I can offer\n/get_some_news — choose the country whose news you want to receive,\n/help — Repeats this message,\n/stats - Get stats")
+    bot.send_message(message.from_user.id, nick +''', I can offer\n/get_some_news — choose the country whose news you want to receive,
+    \n/help — Repeats this message,\n/stats - Get stats''')
     bot.register_next_step_handler(message, start_search);
 
 def sho2(message):
-    #parameters['category'] = message.text
-    #url = ''
-    #bot.send_message(message.from_user.id, )
-    #parameters['source'] = 'CNN'
-    #parameters['keyslovo'] = 'medicine'
-    #response = requests.get(url, params=parameters)
-    #response_json = response.json()
-
     c = datfile.get_news_from_keyword(message.text)
     bot.send_message(message.from_user.id, c)
     bot.register_next_step_handler(message, start_search0);
-    bot.send_message(message.from_user.id, nick +"\n/get_some_news — choose the country whose news you want to receive,\n/help — Repeats this message,\n/stats - Get stats")
+    bot.send_message(message.from_user.id, nick +'''\n/get_some_news — choose the country whose news you want to receive,
+    \n/help — Repeats this message,\n/stats - Get stats''')
     bot.register_next_step_handler(message, start_search);
+
 
 bot.polling(none_stop=True, interval=0)
