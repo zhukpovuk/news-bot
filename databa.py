@@ -6,8 +6,8 @@ db = SqliteDatabase('news_bot.db')
 
 class Stat(Model):
     name = CharField(unique=True)
-    business_number_of_requests= IntegerField()
-    entertainment_number_of_requests= IntegerField()
+    business_number_of_requests = IntegerField()
+    entertainment_number_of_requests = IntegerField()
 
 
     class Meta:
@@ -45,5 +45,6 @@ def update_stats(nick, result):
             player_stats[1] += 1
         elif (result == 'entertainment') or (result == '/entertainment'):
             player_stats[2] += 1
-        query=Stat.update({Stat.business_number_of_requests: player_stats[1], Stat.entertainment_number_of_requests: player_stats[2]}).where(Stat.name == nick)
+        query=Stat.update({Stat.business_number_of_requests: player_stats[1], 
+                           Stat.entertainment_number_of_requests: player_stats[2]}).where(Stat.name == nick)
         query.execute()
